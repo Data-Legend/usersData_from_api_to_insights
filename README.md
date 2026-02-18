@@ -1,37 +1,62 @@
 # USERS DATA: FROM API TO EXPLORATORY DATA ANALYSIS
 
-A Python-based data pipeline that fetches, flattens, cleans, and visualizes user data from the DummyJSON API. 
+A Python project that pulls user data from the DummyJSON API, cleans and explores it with Pandas, and produces professional, theme-consistent visualizations using Seaborn and Matplotlib.
 
-## Overview
-This repository contains a Jupyter Notebook demonstrating an end-to-end workflow for handling nested JSON data retrieved via a paginated REST API. It utilizes `pandas` for efficient data manipulation and `seaborn` for clean, minimal data visualizations.
+## Project Overview
+The notebook `api_to_eda.ipynb` demonstrates a complete workflow:
+1. Fetch paginated API data.
+2. Flatten nested JSON into a tabular DataFrame.
+3. Explore data types, missing values, and category distributions.
+4. Clean key numeric columns (`age`, `height`, `weight`).
+5. Build a consistent set of EDA visuals with a unified styling theme.
 
-## 1. Fetching and Handling Data from API
-- **Pagination Logic:** Implements a `while` loop to dynamically update the `limit` and `skip` parameters to extract all available records iteratively.
-- **Header Spoofing:** Uses a custom `User-Agent` header via Pandas' `storage_options` to bypass HTTP 403 Forbidden restrictions on the public API.
-- **JSON Flattening:** Employs `pd.json_normalize()` to automatically unpack and flatten deeply nested JSON dictionaries (like `address` and `company` fields) into standard, accessible DataFrame columns.
+## 1) Fetching and Handling API Data
+- Uses pagination (`limit` + `skip`) in a loop to retrieve all available users.
+- Applies a browser-like `User-Agent` header via `storage_options`.
+- Flattens nested JSON objects using `pd.json_normalize()`.
 
-## 2. Data Exploration
-Performs basic exploratory data analysis to quickly understand the dataset's structure:
-- Extracting the DataFrame's shape and mapping out column data types.
-- Identifying missing values and checking for duplicate rows.
-- Generating summary statistics (`describe()`) for numerical features.
-- Analyzing value counts for key categorical columns (e.g., gender, city, blood group).
+## 2) Data Exploration
+- Inspects columns, data types, and missing values.
+- Uses `describe()` for numeric summaries.
+- Checks category counts for fields like `gender`, `bloodGroup`, `role`, and `address.country`.
 
-## 3. Data Cleaning
-- Focuses on preparing numerical data for accurate visualization.
-- Imputes missing values in critical numeric columns (`age`, `height`, `weight`) using the **median** rather than the mean to prevent skewness from potential outliers.
+## 3) Data Cleaning
+- Focuses on numeric quality for EDA.
+- Fills missing values in `age`, `height`, and `weight` using median imputation.
+- Verifies final numeric dtypes before visualization.
 
-## 4. Data Visualization
-Uses heavily commented, minimalistic `seaborn` and `matplotlib` code without redundant boilerplate to answer specific data questions visually:
+## 4) Visualization (Unified Professional Theme)
+All charts share one style configuration (grid, typography, spacing, and color system), with explicit category coloring for readability.
 
-### Key Insights: Top 10 Cities
-![Top 10 Cities with the Most Users](/images/top_10_cities_by_users.png)
+Current visualization flow in the notebook:
+1. Number of users by gender
+2. Blood group distribution
+3. User role distribution
+4. Top 10 cities by user count
+5. Age distribution with overall average marker
+6. Age spread by gender (boxplot)
+7. Height distribution with overall average marker
+8. Weight distribution with overall average marker
+9. Correlation heatmap (`age`, `height`, `weight`)
+10. Multi-variable scatter: age vs. height (bubble size = weight, hue = gender)
 
-- **Demographics:** Horizontal count plots to display the Top 10 cities without text overlap, and standard count plots for user gender distribution.
-- **Averages:** Side-by-side bar plots detailing overall average age, height, and weight.
-- **Correlations:** A multi-variable scatterplot mapping Age (x-axis) vs. Height (y-axis), with dot size representing Weight and color hue grouping by Gender, to identify potential trends.
+## Sample Visuals
+### User Distribution by Role
+![User Distribution by Role](images/1.user_distribution_by_role.png)
+
+### Age Distribution
+![Age Distribution](images/2.age_distribution.png)
+
+### Top 10 Cities by User Count
+![Top 10 Cities](images/2.top_10_cities.png)
+
+### Blood Group Distribution
+![Blood Group Distribution](images/3.blood_group_distribution.png)
 
 ## Requirements
-- `pandas`
-- `seaborn`
-- `matplotlib`
+- pandas
+- seaborn
+- matplotlib
+
+## Run
+Open and run `api_to_eda.ipynb` from top to bottom to reproduce the full pipeline and all visuals.
